@@ -18,9 +18,9 @@ public class MessagePatternImpl implements MessagePattern {
 
 		// data = data of the message
 
-		String pattern = "{id:" + message.getuID() + ", ch:'"
-				+ message.getChannelName() + "',data:'" + message.getData()
-				+ "'},";
+		String pattern = "{\"id\":\"" + message.getuID() + "\", \"ch\":\""
+				+ message.getChannelName() + "\",\"data\":\"" + message.getData()
+				+ "\"},";
 
 		return pattern;
 
@@ -28,7 +28,7 @@ public class MessagePatternImpl implements MessagePattern {
 
 	public String getMessages(Collection<Message> messages) {
 
-		String res = "{messages:[";
+		String res = "{\"messages\":[";
 
 		for (Message me : messages) {
 

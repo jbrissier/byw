@@ -32,6 +32,8 @@ public class AsyncronEvent implements Event {
 	public AsyncronEvent(MessagePattern mp) {
 
 		this.massagepattern = mp;
+		
+		
 
 	}
 
@@ -77,12 +79,17 @@ public class AsyncronEvent implements Event {
 	public void init() {
 		req.startAsync(req, res);
 		this.ac = req.getAsyncContext();
-
+//		this.ac.setTimeout(1000);
 		this.ac.addListener(new AsyncListener() {
 
 			public void onTimeout(AsyncEvent event) throws IOException {
-
-				event.getAsyncContext().complete();
+				addMessage(new Message("Timeout"));
+				try {
+					close();
+				} catch (SendFailException e) {
+				//TODO: Error Handling
+				}
+//				event.getAsyncContext().complete();
 				if (eventListener != null)
 					eventListener.onTimeout();
 
