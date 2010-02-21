@@ -4,7 +4,6 @@ import java.io.PrintWriter;
 
 import org.apache.catalina.CometEvent;
 
-import com.google.inject.servlet.SessionScoped;
 
 
 public interface Member {
