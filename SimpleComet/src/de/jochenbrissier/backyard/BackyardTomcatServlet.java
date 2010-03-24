@@ -17,6 +17,24 @@ import org.apache.commons.logging.LogFactory;
 import org.eclipse.persistence.internal.oxm.schema.model.List;
 import org.json.JSONObject;
 
+
+/**
+ * This servlet is the communications backend to the jquery plugin
+ *<br>
+ *set this servelt in your web.xml to use the plugin. 
+ *<br>
+ *This supports Tomcat 6.0.x
+ * 
+ * 
+ * 
+ * 
+ * @author jochen brissier
+ *
+ */
+
+
+
+
 @WebServlet(asyncSupported = true)
 public class BackyardTomcatServlet extends HttpServlet implements
 		CometProcessor {

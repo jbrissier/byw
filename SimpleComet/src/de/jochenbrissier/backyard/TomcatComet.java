@@ -15,7 +15,14 @@ import org.apache.catalina.CometEvent.EventType;
 import org.jvnet.hk2.annotations.Index;
 
 import com.google.inject.Inject;
-
+/**
+ * implementation for tomcat 6.0.x comet processor
+ * 
+ * 
+ * 
+ * @author jochen
+ *
+ */
 public class TomcatComet implements Event {
 
 	CometEvent ev;

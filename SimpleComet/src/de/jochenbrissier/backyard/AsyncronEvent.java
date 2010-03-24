@@ -17,7 +17,13 @@ import javax.servlet.http.HttpServletResponse;
 
 import com.google.inject.Inject;
 
-public class AsyncronEvent implements Event {
+/**
+ * Comet implementation of the Servlet 3.0 API
+ * This will currently only used by Glassfish v3
+ * @author jochen brissier
+ * 
+ */
+public class AsyncronEvent extends BackyardEvent {
 
 	private AsyncContext ac;
 	private HttpServletRequest req;
@@ -32,12 +38,11 @@ public class AsyncronEvent implements Event {
 	public AsyncronEvent(MessagePattern mp) {
 
 		this.massagepattern = mp;
-		
-		
 
 	}
 
 	public void close() throws SendFailException {
+		super.onClose();
 
 		try {
 			PrintWriter wr = ac.getResponse().getWriter();
@@ -77,21 +82,14 @@ public class AsyncronEvent implements Event {
 	}
 
 	public void init() {
+		super.onStart();
 		req.startAsync(req, res);
 		this.ac = req.getAsyncContext();
-//		this.ac.setTimeout(1000);
+		// this.ac.setTimeout(1000);
 		this.ac.addListener(new AsyncListener() {
 
 			public void onTimeout(AsyncEvent event) throws IOException {
-				addMessage(new Message("Timeout"));
-				try {
-					close();
-				} catch (SendFailException e) {
-				//TODO: Error Handling
-				}
-//				event.getAsyncContext().complete();
-				if (eventListener != null)
-					eventListener.onTimeout();
+				timeout();
 
 			}
 
@@ -105,6 +103,7 @@ public class AsyncronEvent implements Event {
 				if (eventListener != null)
 					eventListener.onError();
 				availabel = false;
+				error();
 			}
 
 			public void onComplete(AsyncEvent event) throws IOException {
@@ -159,8 +158,27 @@ public class AsyncronEvent implements Event {
 		this.req = req;
 		this.res = res;
 		this.init();
-		availabel=true;
+		availabel = true;
 
+	}
+
+	private void error() {
+		super.onError();
+	}
+
+	private void timeout() {
+		super.onTimeout();
+		addMessage(new Message("Timeout"));
+
+		try {
+
+			close();
+		} catch (SendFailException e) {
+			// TODO: Error Handling
+		}
+		// event.getAsyncContext().complete();
+		if (eventListener != null)
+			eventListener.onTimeout();
 	}
 
 }

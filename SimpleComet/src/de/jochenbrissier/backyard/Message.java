@@ -2,7 +2,13 @@
 package de.jochenbrissier.backyard;
 
 import java.util.UUID;
-
+/**
+ * an memessage obj. not final 
+ * 
+ *TODO: IMRPOVE ...
+ * @author jochen
+ *
+ */
 public class Message {
 
 	private long channelid;

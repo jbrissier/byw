@@ -1,7 +1,11 @@
 package de.jochenbrissier.backyard;
 
 import java.util.Collection;
-
+/**
+ * Interface which represents a channel
+ * @author jochen
+ *
+ */
 public interface Channel {
 
 	/**

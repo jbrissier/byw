@@ -8,7 +8,11 @@ import org.apache.commons.logging.LogFactory;
 import com.google.inject.Inject;
 import com.google.inject.Injector;
 import com.google.inject.Singleton;
-
+/**
+ * manages the members 
+ * @author jochen
+ *
+ */
 @Singleton
 public class MemberHandler {
 	Log log = LogFactory.getLog(MemberHandler.class);

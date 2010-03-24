@@ -14,6 +14,24 @@ import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.json.JSONObject;
 
+
+/**
+ * This servlet is the communications backend to the jquery plugin
+ *<br>
+ *set this servelt in your web.xml to use the plugin. 
+ *<br>
+ *This supports Glassfish v3 and Jetty 6
+ * 
+ * 
+ * 
+ * 
+ * @author jochen brissier
+ *
+ */
+
+
+
+
 @WebServlet(asyncSupported = true)
 public class BackyardServlet extends HttpServlet {
 
@@ -65,11 +83,12 @@ public class BackyardServlet extends HttpServlet {
 					backyard.startAsync();
 
 			}
-
+//if the json obj contains the function listen
 			if (function.matches("listen")) {
 				log.debug("listen");
 				listenChannel(req, resp, json, backyard);
 			}
+			//if the json obj contains the function send
 
 			if (function.matches("send")) {
 

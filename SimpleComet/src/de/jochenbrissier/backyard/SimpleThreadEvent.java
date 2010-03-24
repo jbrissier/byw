@@ -13,13 +13,23 @@ import javax.servlet.http.HttpSession;
 
 import com.google.inject.Inject;
 
-public class SimpleThreadEvent implements Event {
+/**
+ * implementation for an servlet container without comet support
+ * 
+ * 
+ * WARNING NOT WORKING YET;
+ * 
+ * 
+ * @author jochen
+ * 
+ */
+public class SimpleThreadEvent extends BackyardEvent {
 
 	private boolean running = true;
 	HttpServletRequest req;
 	HttpServletResponse res;
 	MessagePattern mp;
-	boolean availabel=false;
+	boolean availabel = false;
 
 	LinkedList<Message> messages = new LinkedList<Message>();
 
@@ -36,7 +46,7 @@ public class SimpleThreadEvent implements Event {
 
 	public void close() throws SendFailException {
 		this.running = false;
-System.out.println("close");
+		System.out.println("close");
 		try {
 			PrintWriter wr = this.res.getWriter();
 			wr.print(mp.getMessages(messages));
@@ -66,10 +76,10 @@ System.out.println("close");
 	}
 
 	public void init() {
-		this.availabel=true;
+		this.availabel = true;
 		while (this.running) {
 			System.out.println(this.running);
-	
+
 			try {
 				Thread.sleep(1000);
 			} catch (InterruptedException e) {

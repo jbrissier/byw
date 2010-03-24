@@ -4,6 +4,14 @@ import java.util.Collection;
 
 import com.google.inject.Inject;
 
+
+/**
+ * returns a message list as json sting 
+ * @author jochen
+ *
+ */
+
+
 public class MessagePatternJSON implements MessagePattern {
 
 	@Inject

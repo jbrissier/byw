@@ -8,6 +8,19 @@ import org.apache.commons.logging.LogFactory;
 
 import com.google.inject.AbstractModule;
 import com.google.inject.Provides;
+/**
+ * 
+ * this is the standard binding of the interfaces
+ * <ul>
+ * <li>channel</li>
+ * <li>Member<li>
+ * <li>Event<li>
+ * </ul>
+ * 
+ * 
+ * @author jochenbrissier
+ *
+ */
 
 public class BasicModule extends AbstractModule {
 

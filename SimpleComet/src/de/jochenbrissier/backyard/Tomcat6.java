@@ -9,7 +9,11 @@ import org.apache.commons.logging.LogFactory;
 
 import com.google.inject.AbstractModule;
 import com.google.inject.Provides;
-
+/**
+ * module for tomacat 6.0.x
+ * @author jochen
+ *
+ */
 public class Tomcat6 extends AbstractModule {
 
 	Log log = LogFactory.getLog(Tomcat6.class);
