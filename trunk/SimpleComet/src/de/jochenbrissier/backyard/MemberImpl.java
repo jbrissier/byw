@@ -1,6 +1,13 @@
 package de.jochenbrissier.backyard;
 
+
+/**
+ * implementation of the merber interface
+ */
+
+
 import java.util.Iterator;
+
 import java.util.LinkedList;
 import java.util.Queue;
 import java.util.concurrent.ConcurrentLinkedQueue;

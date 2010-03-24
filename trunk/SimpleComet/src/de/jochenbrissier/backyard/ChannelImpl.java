@@ -6,7 +6,13 @@ import java.util.Collections;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
-
+/**
+ * standard implementation of the interface channel.
+ * 
+ * it represents a channel
+ * @author jochen
+ *
+ */
 public class ChannelImpl implements Channel {
 
 	private Log log = LogFactory.getLog(ChannelImpl.class);
@@ -96,8 +102,17 @@ public class ChannelImpl implements Channel {
 
 			Member lmember = cL.newMember(member);
 
-			if (lmember != null)
-				member = lmember;
+			//if the listener don't return the member obj the member will not be ad to the channel.
+			if(lmember == null){
+				return;
+			}
+			
+			
+			if (lmember != null){
+				//add the current member
+//				member = lmember;	
+			}
+
 		}
 
 		synchronized (members) {

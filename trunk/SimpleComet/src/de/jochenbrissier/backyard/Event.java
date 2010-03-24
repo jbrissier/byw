@@ -10,6 +10,13 @@ import javax.servlet.http.HttpServletResponse;
 
 import org.apache.catalina.CometEvent;
 
+
+/**
+ * Event is the representation of a comet procession cycle
+ * @author jochen
+ *
+ */
+
 public interface Event {
 
 	public void setEventListener(EventListener eventListener);

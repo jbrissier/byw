@@ -1,5 +1,8 @@
 package de.jochenbrissier.backyard;
 
+/**
+ *will be thrown if a message not will send;
+ */
 public class SendFailException extends Exception {
 
 	public SendFailException() {

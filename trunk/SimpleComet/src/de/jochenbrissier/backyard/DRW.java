@@ -4,7 +4,11 @@ import javax.servlet.ServletRequest;
 import javax.servlet.ServletResponse;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-
+/**
+ * the start of an DRW PLUGIN for Backyard
+ * @author jochen
+ *
+ */
 public class DRW implements Event {
 
 	public void addMessage(Message message) {
