@@ -12,16 +12,16 @@ import javax.servlet.http.HttpServletResponse;
 
 import org.apache.catalina.CometEvent;
 import org.apache.catalina.CometEvent.EventType;
-import org.jvnet.hk2.annotations.Index;
 
 import com.google.inject.Inject;
+
 /**
  * implementation for tomcat 6.0.x comet processor
  * 
  * 
  * 
  * @author jochen
- *
+ * 
  */
 public class TomcatComet implements Event {
 
@@ -55,9 +55,10 @@ public class TomcatComet implements Event {
 			wr.flush();
 
 			this.ev.close();
-		} catch (IOException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
+		} catch (Exception e) {
+			this.ready = false;
+			this.error = true;
+			throw new SendFailException(e.toString());
 		}
 
 	}
@@ -146,6 +147,12 @@ public class TomcatComet implements Event {
 				if (this.ev.getEventSubType() != CometEvent.EventSubType.TIMEOUT)
 					error = true;
 				ready = false;
+				try {
+					close();
+				} catch (SendFailException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
 
 			}
 
@@ -174,9 +181,9 @@ public class TomcatComet implements Event {
 	}
 
 	private void timeout() {
-		
+
 		addMessage(new Message("timeout"));
-	
+
 	}
 
 }
