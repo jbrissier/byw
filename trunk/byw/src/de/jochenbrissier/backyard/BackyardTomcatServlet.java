@@ -81,7 +81,7 @@ public class BackyardTomcatServlet extends HttpServlet implements
 
 		backyard.setServlet(this);
 
-		System.out.println("servlet invoked");
+	
 
 		// json obj
 		String data = req.getParameter("data");
