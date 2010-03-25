@@ -102,6 +102,7 @@ public class MemberImpl implements Member {
 			log.debug("Event is null");
 		}
 
+		//if the event is ready
 		if (this.actualEvent != null && this.actualEvent.isReady()) {
 
 			log.debug("Event is ready");
@@ -141,8 +142,7 @@ public class MemberImpl implements Member {
 
 				actualEvent.close();
 			} catch (Exception e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
+				
 			}
 
 	}

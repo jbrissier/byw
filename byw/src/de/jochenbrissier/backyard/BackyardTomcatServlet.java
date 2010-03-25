@@ -39,8 +39,7 @@ import org.json.JSONObject;
 public class BackyardTomcatServlet extends HttpServlet implements
 		CometProcessor {
 
-
-	
+protected void service(HttpServletRequest req, HttpServletResponse resp) throws ServletException ,IOException {};
 	
 	
 	Log log = LogFactory.getLog(BackyardTomcatServlet.class);
