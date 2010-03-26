@@ -38,7 +38,7 @@ public class BackyardModule extends AbstractModule {
 		bind(Channel.class).to(ChannelImpl.class);
 
 		// TODO: choose the correct for the particularly servlet container
-		// bind(Event.class).to(AsyncronEvent.class);
+		bind(Event.class).to(AsyncronEvent.class);
 
 		bind(ChannelHandler.class).asEagerSingleton();
 
