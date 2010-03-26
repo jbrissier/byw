@@ -57,18 +57,17 @@ public class Backyard {
 	Log log = LogFactory.getLog(Backyard.class);
 
 	// static globals
-	private static Injector in = Guice.createInjector(new BackyardModule());
-	private static ChannelHandler channelhandler = in
-			.getInstance(ChannelHandler.class);
+	private static Injector in;
+	private static ChannelHandler channelhandler;
 
-	private static MemberHandler memberhandler = in
-			.getInstance(MemberHandler.class);
+	private static MemberHandler memberhandler;
 
 	// members
 	private Member member;
 	private HttpServlet servlet;
 	private HttpServletRequest req;
 	private HttpServletResponse resp;
+	private static boolean alternativ_impl = false;
 
 	/**
 	 *Constructor of Backyard.
@@ -83,10 +82,17 @@ public class Backyard {
 
 		this.resp = resp;
 		this.req = req;
-		//get the member from the member handler.
+		// get the member from the member handler.
 		this.member = memberhandler.getMember(req.getSession().getId());
-		
-		//listen to meta channel
+
+		if (!alternativ_impl)
+			in = Guice.createInjector(new BackyardModule());
+
+		channelhandler = in.getInstance(ChannelHandler.class);
+
+		memberhandler = in.getInstance(MemberHandler.class);
+
+		// listen to meta channel
 		listenToChannel(0);
 
 	}
@@ -113,7 +119,8 @@ public class Backyard {
 	 */
 
 	public static void setAlternativeImpl(AbstractModule ba) {
-		in = Guice.createInjector(ba);
+		in = Guice.createInjector(new StandardModule(), ba);
+		alternativ_impl = true;
 	}
 
 	/**
@@ -137,7 +144,8 @@ public class Backyard {
 	 * @param ba
 	 */
 	public static void setAlternativeImpl(AbstractModule ba, AbstractModule ab) {
-		in = Guice.createInjector(ba, ab);
+		in = Guice.createInjector(new StandardModule(), ba, ab);
+		alternativ_impl = true;
 
 	}
 
@@ -161,10 +169,13 @@ public class Backyard {
 	 * 
 	 * @param ba
 	 */
-
-	public static void setAlternativeImpl(Iterable<? extends Module> ba) {
-		in = Guice.createInjector(ba);
-	}
+	// TODO: IMPLEMENT THIS !
+	/*
+	 * public static void setAlternativeImpl(Iterable<? extends Module> ba) { in
+	 * = Guice.createInjector(ba);
+	 * 
+	 * }
+	 */
 
 	/**
 	 * set a other member to backyard obj. standart member is the member from
