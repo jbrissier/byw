@@ -32,10 +32,10 @@ Second you have to add the following to your web.xml
 
 Third you have to import the following jars to your lib folder
 
- *guice-2.0.jar
- *json-rpc-1.0.jar
- *commons-logging.jar
- *backyard0.1.jar
+ * guice-2.0.jar
+ * json-rpc-1.0.jar
+ * commons-logging.jar
+ * backyard0.1.jar
 
 
 ==Client configuration ==
@@ -108,8 +108,6 @@ alert(msg);
 });
 
 }}}
-
-
 
 
 
