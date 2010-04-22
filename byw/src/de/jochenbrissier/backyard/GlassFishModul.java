@@ -16,23 +16,13 @@ public class GlassFishModul extends AbstractModule {
 	protected void configure() {
 
 
-		// bind channel
-		bind(Channel.class).to(ChannelImpl.class);
-
-		// bind async implementation
-
 		// TODO: choose the correct for the particularly servlet container
 		 bind(Event.class).to(AsyncronEvent.class);
 
-		bind(ChannelHandler.class).asEagerSingleton();
 
-		bind(SendFailException.class);
 
-		bind(MessagePattern.class).to(MessagePatternJSON.class);
 
-		bind(Member.class).to(MemberImpl.class);
 
-		bind(MemberHandler.class);
 
 	}
 
