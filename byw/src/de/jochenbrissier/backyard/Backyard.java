@@ -82,8 +82,7 @@ public class Backyard {
 
 		this.resp = resp;
 		this.req = req;
-		// get the member from the member handler.
-		this.member = memberhandler.getMember(req.getSession().getId());
+		
 
 		if (!alternativ_impl)
 			in = Guice.createInjector(new BackyardModule());
@@ -92,6 +91,11 @@ public class Backyard {
 
 		memberhandler = in.getInstance(MemberHandler.class);
 
+		
+		// get the member from the member handler.
+		this.member = memberhandler.getMember(req.getSession().getId());
+		
+		
 		// listen to meta channel
 		listenToChannel(0);
 
