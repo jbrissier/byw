@@ -40,7 +40,7 @@ public class BackyardServlet extends HttpServlet {
 	
 	@Override
 	public void init() throws ServletException {
-		Backyard.setAlternativeImpl(new GlassFishModul());
+		Backyard.setAlternativeImpl(new JettyModule());
 	}
 	
 	
@@ -75,14 +75,33 @@ public class BackyardServlet extends HttpServlet {
 
 			// get function from request json
 			String function = json.getString("fn");
-
+			
+			
 			if (function.matches("handshake")) {
 				log.debug("Handshake");
+
+					//TODO: GENERATE AN ID OR SEND THE SESSION ID TO THE CLIENT
+				
+					resp.getWriter().print("{\"status\":\"OK\"}");
+				
+				
+					
+				return;
+
+			}
+			
+			if (function.matches("comet")) {
+				log.debug("comet");
 
 				
 					backyard.startAsync();
 
 			}
+			
+			
+			
+			
+			
 //if the json obj contains the function listen
 			if (function.matches("listen")) {
 				log.debug("listen");

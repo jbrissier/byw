@@ -1,6 +1,7 @@
 package de.jochenbrissier.backyard;
 
 import java.io.IOException;
+import java.io.PrintWriter;
 import java.text.ParseException;
 
 import javax.servlet.RequestDispatcher;
@@ -17,38 +18,29 @@ import org.apache.commons.logging.LogFactory;
 import org.eclipse.persistence.internal.oxm.schema.model.List;
 import org.json.JSONObject;
 
-
 /**
- * This servlet is the communications backend to the jquery plugin
- *<br>
- *set this servelt in your web.xml to use the plugin. 
- *<br>
+ * This servlet is the communications backend to the jquery plugin <br>
+ *set this servelt in your web.xml to use the plugin. <br>
  *This supports Tomcat 6.0.x
  * 
  * 
  * 
  * 
  * @author jochen brissier
- *
+ * 
  */
 
-
-
-
-@WebServlet(asyncSupported = true)
 public class BackyardTomcatServlet extends HttpServlet implements
 		CometProcessor {
 
-protected void service(HttpServletRequest req, HttpServletResponse resp) throws ServletException ,IOException {};
-	
-	
+
+
 	Log log = LogFactory.getLog(BackyardTomcatServlet.class);
 
 	@Override
 	public void init() throws ServletException {
-	
-		
-		Backyard.setAlternativeImpl(new Tomcat6(),new JsonModule());
+
+		Backyard.setAlternativeImpl(new Tomcat6Module());
 	}
 
 	private void send(HttpServletRequest req, HttpServletResponse resp,
@@ -80,8 +72,6 @@ protected void service(HttpServletRequest req, HttpServletResponse resp) throws 
 
 		backyard.setServlet(this);
 
-	
-
 		// json obj
 		String data = req.getParameter("data");
 
@@ -94,6 +84,21 @@ protected void service(HttpServletRequest req, HttpServletResponse resp) throws 
 
 			if (function.matches("handshake")) {
 				log.debug("Handshake");
+
+				// TODO: GENERATE AN ID OR SEND THE SESSION ID TO THE CLIENT
+
+				PrintWriter pw = ev.getHttpServletResponse().getWriter();
+
+				pw.print("{\"status\":\"OK\"}");
+				pw.flush();
+				pw.close();
+
+				return;
+
+			}
+
+			if (function.matches("comet")) {
+				log.debug("comet");
 
 				backyard.startAsync(ev);
 
