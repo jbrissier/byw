@@ -4,12 +4,18 @@
 	var connected = false;
 	var channels = new Array();
 	var servlet_url;
-
+	var client_id;
+	var lastupdate=new Date().getTime();
+	var comet_process;
+	
+	
+	
+	
 	$.backyard = function(options) {
 
 		var defaults = {
-			url : 'BackyardServlet'
-
+			url : 'BackyardServlet',
+			failover:true
 		};
 
 		var options = $.extend(defaults, options);
@@ -23,6 +29,9 @@
 		
 		
 		handshake(options.url);
+		
+		if(options.failover)
+		setInterval( failover, 5000 );
 
 	};// backyard
 
@@ -32,7 +41,11 @@
 	function comet(servlet_url){
 		var comet_json = "{fn:'comet'}";
 		
-		jQuery.ajax( {
+		
+		
+		
+		
+		comet_process =jQuery.ajax( {
 			type : 'POST',
 			url : servlet_url,
 			dataType : 'json',
@@ -47,15 +60,37 @@
 				}
 			},
 			success : function(mes) {
+				lastupdate=new Date().getTime();
 				
+				try{
 				if (window.console) {
 					console.debug(mes.messages[0].data);
 				}
+				
+				
+				
+				
+				
+				
 				// if timeout
 			if (mes.messages[0].data == 'Timeout'){
 				comet(servlet_url);
 				return;
 			}
+			
+				}
+				
+				catch(e){
+					//message null
+					if (window.console) {
+						console.debug("message null");
+					}
+					
+				}
+				
+			
+			
+			try{
 			
 			jQuery.each(mes.messages,function(i, val){
 				//get channel
@@ -71,7 +106,13 @@
 			
 				
 			});
+			}
 			
+			catch(e){
+				
+				return;
+				
+			};
 			
 			comet(servlet_url);
 			
@@ -113,6 +154,10 @@
 				if(mes.status == "OK"){
 					comet(servlet_url);
 				
+					
+					client_id =  mes.id;
+					
+					
 				}
 			
 		
@@ -146,6 +191,12 @@
 					
 					channels.push(tmpch);
 					
+					
+					
+					
+					
+					
+					
 				}
 
 			}
@@ -178,6 +229,14 @@
 		});// ajax
 
 	}
+	
+	
+	
+	
+	
+	
+	
+	
 
 	// util functions
 
@@ -192,6 +251,54 @@
 
 	}
 
+	function failover(){
+		
+		
+		
+		if( new Date().getTime()-lastupdate>120000 || comet_process.readyState>3){
+			if (window.console) {
+				console.debug("connection lost");
+			}
+		
+			
+			
+			
+			
+			if(comet_process!=null)
+			comet_process.abort();
+		
+			//new handshake
+			handshake(servlet_url);
+			
+			
+			//add channels
+			tmpchannels = channels;
+			channels =new Array();
+			
+			
+			jQuery(tmpchannels).each(function(index,channel){
+				
+				jQuery.backyard.listen(channel.ch, channel.fn);
+				
+				
+			});
+			
+			
+			
+			
+			
+			
+			
+			
+			
+		}
+		
+		
+		
+		
+	}
+	
+	
 })(jQuery);
 
 
