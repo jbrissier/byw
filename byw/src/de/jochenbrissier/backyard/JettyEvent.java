@@ -27,7 +27,6 @@ public class JettyEvent extends BackyardEvent {
 	@Inject
 	public JettyEvent(MessagePattern mp) {
 		this.massagepattern = mp;
-		System.out.println("jetty event");
 
 	}
 

@@ -61,5 +61,6 @@ public class MessagePatternJSON implements MessagePattern {
 
 		return res;
 	}
-
+	
+	
 }

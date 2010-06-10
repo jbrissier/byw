@@ -40,7 +40,7 @@ public class BackyardServlet extends HttpServlet {
 	
 	@Override
 	public void init() throws ServletException {
-		Backyard.setAlternativeImpl(new JettyModule());
+		Backyard.autoDedectImpl(this);
 	}
 	
 	
@@ -82,7 +82,7 @@ public class BackyardServlet extends HttpServlet {
 
 					//TODO: GENERATE AN ID OR SEND THE SESSION ID TO THE CLIENT
 				
-					resp.getWriter().print("{\"status\":\"OK\"}");
+					resp.getWriter().print("{\"status\":\"OK\",\"id\":\""+req.getSession().getId()+"\"}");
 				
 				
 					

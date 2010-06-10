@@ -1,5 +1,9 @@
 package de.jochenbrissier.backyard;
 
+import java.util.ArrayList;
+import java.util.Set;
+
+import javax.servlet.Servlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -10,7 +14,6 @@ import org.apache.commons.logging.LogFactory;
 import com.google.inject.AbstractModule;
 import com.google.inject.Guice;
 import com.google.inject.Injector;
-import com.google.inject.Module;
 
 /**
  * 
@@ -59,6 +62,7 @@ public class Backyard {
 	// static globals
 	private static Injector in;
 	private static ChannelHandler channelhandler;
+	private static ArrayList<ChannelListenerBuffer> channelListenerBuffer = new ArrayList<ChannelListenerBuffer>();
 
 	private static MemberHandler memberhandler;
 
@@ -82,7 +86,6 @@ public class Backyard {
 
 		this.resp = resp;
 		this.req = req;
-		
 
 		if (!alternativ_impl)
 			in = Guice.createInjector(new BackyardModule());
@@ -91,16 +94,44 @@ public class Backyard {
 
 		memberhandler = in.getInstance(MemberHandler.class);
 
-		
+		// load channelhandler from the buffer
+
+		for (ChannelListenerBuffer key : channelListenerBuffer) {
+
+			if (key.getChannel().matches(".*_nb")) {
+				addChannelListener(new Integer(key.getChannel().split("_")[0]),
+						key.getCl());
+			} else {
+				addChannelListener(key.getChannel(), key.getCl());
+			}
+
+		}
+		// clear the buffer;
+
+		channelListenerBuffer.clear();
+
 		// get the member from the member handler.
 		this.member = memberhandler.getMember(req.getSession().getId());
-		
-		
+
 		// listen to meta channel
 		listenToChannel(0);
 
 	}
 
+	
+	public static void autoDedectImpl(Servlet servlet){
+		try {
+			in = Guice.createInjector(new StandardModule(), ServerDedec.getModuleClass(servlet));
+			alternativ_impl = true;
+			
+		} catch (ServerNotSupportedException e) {
+		} catch (ClassNotFoundException e) {
+		}
+	}
+	
+	
+	
+	
 	/**
 	 * Backyard also provides a alternative implementations for a specific
 	 * servlet container such as Tomcat, Jetty or Glassfish You can also write
@@ -275,6 +306,14 @@ public class Backyard {
 	 */
 
 	public static void addChannelListener(String channel, ChannelListener cl) {
+
+		if (channelhandler == null) {
+
+			channelListenerBuffer.add(new ChannelListenerBuffer(channel, cl));
+			return;
+
+		}
+
 		channelhandler.getChannel(channel).addListener(cl);
 
 	}
@@ -287,6 +326,14 @@ public class Backyard {
 	 */
 
 	public static void addChannelListener(int id, ChannelListener cl) {
+		if (channelhandler == null) {
+
+			channelListenerBuffer
+					.add(new ChannelListenerBuffer(id + "_nb", cl));
+			return;
+
+		}
+
 		channelhandler.getChannel(id).addListener(cl);
 	}
 
