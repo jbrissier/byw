@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<backyard>
+
+	<modules>
+
+		<Tomcat6>de.jochenbrissier.Tomcat6Module</Tomcat6>
+		<Glassfishv3>de.jochenbrissier.TomcatModule</Glassfishv3>
+		<Jetty7>de.jochenbrissier.JettyModule</Jetty7>
+
+	</modules>
+
+
+
+
+
+
+</backyard>
