@@ -74,4 +74,7 @@ public interface Channel {
 	
 	public void addListener(ChannelListener cL);
 
+	public void removeListener(ChannelListener cL);
+	
+	
 }

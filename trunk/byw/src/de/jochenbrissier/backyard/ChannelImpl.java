@@ -6,19 +6,21 @@ import java.util.Collections;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
+
 /**
  * standard implementation of the interface channel.
  * 
  * it represents a channel
+ * 
  * @author jochen
- *
+ * 
  */
 public class ChannelImpl implements Channel {
 
 	private Log log = LogFactory.getLog(ChannelImpl.class);
 
 	protected ArrayList<Member> members = new ArrayList<Member>();
-	protected ChannelListener cL;
+	protected ArrayList<ChannelListener> chlist = new ArrayList<ChannelListener>();
 
 	private String name;
 	private long id;
@@ -48,7 +50,7 @@ public class ChannelImpl implements Channel {
 	public void sendMessage(Message message) {
 		log.debug("Send Message to" + members);
 
-		if (cL != null) {
+		for (ChannelListener cL : chlist) {
 
 			String lmess = cL.newMessage(message.getData());
 
@@ -56,7 +58,6 @@ public class ChannelImpl implements Channel {
 				message.setData(lmess);
 
 		}
-		
 
 		message.setChannelid(id);
 		message.setChannelName(name);
@@ -84,33 +85,32 @@ public class ChannelImpl implements Channel {
 
 	public void addListener(ChannelListener cL) {
 
-		this.cL = cL;
+		this.chlist.add(cL);
 
 	}
 
 	public void addMember(Member member) {
 
-		
-		if(isMember(member)){
-		
+		if (isMember(member)) {
+
 			log.debug("is already member");
 			return;
 		}
-		
+
 		// cannel listener
-		if (cL != null) {
+		for (ChannelListener cL : chlist) {
 
 			Member lmember = cL.newMember(member);
 
-			//if the listener don't return the member obj the member will not be ad to the channel.
-			if(lmember == null){
+			// if the listener don't return the member obj the member will not
+			// be ad to the channel.
+			if (lmember == null) {
 				return;
 			}
-			
-			
-			if (lmember != null){
-				//add the current member
-//				member = lmember;	
+
+			if (lmember != null) {
+				// add the current member
+				// member = lmember;
 			}
 
 		}
@@ -208,6 +208,13 @@ public class ChannelImpl implements Channel {
 		}
 
 		return false;
+	}
+
+	@Override
+	public void removeListener(ChannelListener cL) {
+
+		chlist.remove(cL);
+
 	}
 
 }

@@ -6,6 +6,8 @@ import java.text.ParseException;
 
 import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
+import javax.servlet.ServletRequest;
+import javax.servlet.ServletResponse;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
@@ -30,6 +32,12 @@ import org.json.JSONObject;
  * 
  */
 
+
+
+
+
+
+
 public class BackyardTomcatServlet extends HttpServlet implements
 		CometProcessor {
 
@@ -40,7 +48,8 @@ public class BackyardTomcatServlet extends HttpServlet implements
 	@Override
 	public void init() throws ServletException {
 
-		Backyard.setAlternativeImpl(new Tomcat6Module());
+		Backyard.autoDedectImpl(this);
+
 	}
 
 	private void send(HttpServletRequest req, HttpServletResponse resp,
@@ -48,6 +57,15 @@ public class BackyardTomcatServlet extends HttpServlet implements
 
 	}
 
+	
+	@Override
+	public void service(ServletRequest req, ServletResponse res)
+			throws ServletException, IOException {
+		// TODO Auto-generated method stub
+	}
+	
+	
+	
 	private void listenChannel(HttpServletRequest req,
 			HttpServletResponse resp, JSONObject json, Backyard backyard) {
 
@@ -126,7 +144,7 @@ public class BackyardTomcatServlet extends HttpServlet implements
 				}
 				ev.close();
 			}
-		} catch (ParseException e) {
+		} catch (Exception e) {
 
 			log.warn(e);
 		}
