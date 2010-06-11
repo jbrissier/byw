@@ -4,9 +4,9 @@
 
 	<modules>
 
-		<Tomcat6>de.jochenbrissier.Tomcat6Module</Tomcat6>
-		<Glassfishv3>de.jochenbrissier.TomcatModule</Glassfishv3>
-		<Jetty7>de.jochenbrissier.JettyModule</Jetty7>
+		<Tomcat6>de.jochenbrissier.backyard.Tomcat6Module</Tomcat6>
+		<Glassfishv3>de.jochenbrissier.backyard.TomcatModule</Glassfishv3>
+		<Jetty7>de.jochenbrissier.backyard.JettyModule</Jetty7>
 
 	</modules>
 

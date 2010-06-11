@@ -121,11 +121,14 @@ public class Backyard {
 	
 	public static void autoDedectImpl(Servlet servlet){
 		try {
-			in = Guice.createInjector(new StandardModule(), ServerDedec.getModuleClass(servlet));
+			in = Guice.createInjector(new StandardModule(), new ServerDedec().getModuleClass(servlet));
 			alternativ_impl = true;
 			
 		} catch (ServerNotSupportedException e) {
+			e.printStackTrace();
 		} catch (ClassNotFoundException e) {
+			e.printStackTrace();
+		
 		}
 	}
 	
