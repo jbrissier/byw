@@ -19,9 +19,9 @@ import com.google.inject.Guice;
 import com.google.inject.Injector;
 import com.google.inject.Module;
 
-public class ServerDedec {
+public class ServerDetec {
 
-	static Log log = LogFactory.getLog(ServerDedec.class);
+	static Log log = LogFactory.getLog(ServerDetec.class);
 
 	// matching attributes
 	private static final String TOMCAT6 = "Apache Tomcat/6\\.0.*";
