@@ -2,13 +2,8 @@ package de.jochenbrissier.backyard;
 
 import java.io.IOException;
 import java.io.PrintWriter;
-import java.text.ParseException;
 
-import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
-import javax.servlet.ServletRequest;
-import javax.servlet.ServletResponse;
-import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -17,7 +12,6 @@ import org.apache.catalina.CometEvent;
 import org.apache.catalina.CometProcessor;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
-import org.eclipse.persistence.internal.oxm.schema.model.List;
 import org.json.JSONObject;
 
 /**
@@ -32,16 +26,8 @@ import org.json.JSONObject;
  * 
  */
 
-
-
-
-
-
-
 public class BackyardTomcatServlet extends HttpServlet implements
 		CometProcessor {
-
-
 
 	Log log = LogFactory.getLog(BackyardTomcatServlet.class);
 
@@ -57,15 +43,63 @@ public class BackyardTomcatServlet extends HttpServlet implements
 
 	}
 
-	
+	private HttpServletRequest req;
+	private HttpServletResponse res;
+
 	@Override
-	public void service(ServletRequest req, ServletResponse res)
-			throws ServletException, IOException {
-		// TODO Auto-generated method stub
+	public void service(final HttpServletRequest req,
+			final HttpServletResponse res) throws ServletException, IOException {
+
+		if (ServerDetec.isServer(ServerDetec.TOMCAT6, this)) {
+			//super.service(req, res);
+			return;
+		
+		}
+
+		req.setAttribute("de.jochenbrissier.byw.comet", "noneTomcat");
+
+		event(new CometEvent() {
+
+			@Override
+			public void setTimeout(int arg0) throws IOException,
+					ServletException, UnsupportedOperationException {
+				// TODO Auto-generated method stub
+
+			}
+
+			@Override
+			public HttpServletResponse getHttpServletResponse() {
+				// TODO Auto-generated method stub
+				return res;
+			}
+
+			@Override
+			public HttpServletRequest getHttpServletRequest() {
+				// TODO Auto-generated method stub
+				return req;
+			}
+
+			@Override
+			public EventType getEventType() {
+				// TODO Auto-generated method stub
+				return EventType.BEGIN;
+			}
+
+			@Override
+			public EventSubType getEventSubType() {
+				// TODO Auto-generated method stub
+				return null;
+			}
+
+			@Override
+			public void close() throws IOException {
+				// TODO Auto-generated method stub
+
+			}
+		});
+
 	}
-	
-	
-	
+
 	private void listenChannel(HttpServletRequest req,
 			HttpServletResponse resp, JSONObject json, Backyard backyard) {
 
@@ -77,6 +111,9 @@ public class BackyardTomcatServlet extends HttpServlet implements
 
 	public void event(CometEvent ev) throws IOException, ServletException {
 
+		
+		
+		
 		log.debug("enter service backyard servlet");
 
 		log.debug("enter BackyardServlet");
@@ -118,8 +155,15 @@ public class BackyardTomcatServlet extends HttpServlet implements
 			if (function.matches("comet")) {
 				log.debug("comet");
 
-				backyard.startAsync(ev);
-
+				// if the implementation is a non Tomcat implementation invoke
+				// the normal
+				if (req.getAttribute("de.jochenbrissier.byw.comet") != null
+						&& req.getAttribute("de.jochenbrissier.byw.comet")
+								.equals("nonTomcat")) {
+					backyard.startAsync();
+				} else {
+					backyard.startAsync(ev);
+				}
 			}
 
 			if (function.matches("listen")) {
