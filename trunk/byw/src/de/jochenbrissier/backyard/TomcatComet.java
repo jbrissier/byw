@@ -12,6 +12,8 @@ import javax.servlet.http.HttpServletResponse;
 
 import org.apache.catalina.CometEvent;
 import org.apache.catalina.CometEvent.EventType;
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
 
 import com.google.inject.Inject;
 
@@ -24,6 +26,8 @@ import com.google.inject.Inject;
  * 
  */
 public class TomcatComet implements Event {
+
+	Log log = LogFactory.getLog(Event.class);
 
 	CometEvent ev;
 	boolean ready = false;
@@ -132,7 +136,15 @@ public class TomcatComet implements Event {
 
 			}
 			if (eventType == CometEvent.EventType.END) {
+				log.debug("event end");
 				this.ready = false;
+				try {
+					ev.close();
+					log.debug("event closed");
+				} catch (IOException e) {
+					// TODO Auto-generated catch block
+					log.debug(e);
+				}
 			}
 
 			if (eventType == CometEvent.EventType.READ) {
@@ -141,19 +153,30 @@ public class TomcatComet implements Event {
 
 			if (eventType == CometEvent.EventType.ERROR) {
 
+				error = true;
+				ready = false;
+
+				if (this.ev.getEventSubType() == CometEvent.EventSubType.CLIENT_DISCONNECT) {
+					error = true;
+					ready = false;
+					log.debug("client_disconected");
+				}
+
 				if (this.ev.getEventSubType() == CometEvent.EventSubType.TIMEOUT) {
 					timeout();
 				}
-				if (this.ev.getEventSubType() != CometEvent.EventSubType.TIMEOUT)
+				if (this.ev.getEventSubType() != CometEvent.EventSubType.TIMEOUT) {
 					error = true;
-				ready = false;
-				try {
-					close();
-				} catch (SendFailException e) {
-					// TODO Auto-generated catch block
-					e.printStackTrace();
+					ready = false;
+					try {
+						close();
+					} catch (SendFailException e) {
+						// TODO Auto-generated catch block
+						e.printStackTrace();
+					}
 				}
-
+				error = true;
+				ready = false;
 			}
 
 		}
