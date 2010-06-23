@@ -1,0 +1,5 @@
+<!ELEMENT backyard (server*)>
+<!ELEMENT server (name, pattern, module)>
+<!ELEMENT name (#PCDATA)>
+<!ELEMENT pattern (#PCDATA)>
+<!ELEMENT module (#PCDATA)>
