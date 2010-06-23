@@ -43,6 +43,8 @@ public class ServerDetec {
 	private static final String XML_FILE = "Backyard.xml";
 
 	/**
+	 * 
+	 * 
 	 * regex matching the server info
 	 * 
 	 * @param servlet
