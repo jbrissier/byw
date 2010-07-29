@@ -8,7 +8,8 @@
 
 First you have to change your Tomcat Http Connector if you are using Tomcat Server
 otherwise you can skip this step.
-Go to your servlet.xml and change the following entry:
+
+Go to your server.xml and change the following entry:
 
 {{{
 <Connector port="8080" protocol="HTTP/1.1" connectionTimeout="20000"          redirectPort="8443" />
@@ -134,5 +135,3 @@ alert(msg);
 });
 
 }}}
-
-
