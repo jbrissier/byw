@@ -1,4 +1,3 @@
-#labels q
 = The Java API =
 Backyard provides a simple Java API.
 
