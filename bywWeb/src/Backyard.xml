@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE backyard PUBLIC "Bckyard 0.2 Configuration" "/Users/jochen/Desktop/backyard02.dtd">
+
+
+
+<backyard>
+	<server>
+		<name>Tomcat6</name>
+		<pattern>Apache Tomcat/6\.0.*</pattern>
+		<module>de.jochenbrissier.backyard.module.Tomcat6Module</module>
+		<WebsocketSupport>false</WebsocketSupport>
+	</server>
+
+
+	<server>
+		<name>Jetty7</name>
+		<pattern>jetty/7.*</pattern>
+		<module>de.jochenbrissier.backyard.module.JettyModule</module>
+		<WebsocketSupport >true</WebsocketSupport>
+	</server>
+
+	<server>
+		<name>Glassfishv3</name>
+		<pattern>tomcat6.*</pattern>
+		<module>de.jochenbrissier.backyard.module.GlassFishModule</module>
+		<WebsocketSupport >false</WebsocketSupport>
+	</server>
+
+
+</backyard>
