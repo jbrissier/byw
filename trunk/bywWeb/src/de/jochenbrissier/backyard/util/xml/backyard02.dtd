@@ -1,0 +1,6 @@
+<!ELEMENT backyard (server*)>
+<!ELEMENT server (name, pattern, module, WebsocketSupport)>
+<!ELEMENT name (#PCDATA)>
+<!ELEMENT pattern (#PCDATA)>
+<!ELEMENT module (#PCDATA)>
+<!ELEMENT WebsocketSupport (#PCDATA)>
