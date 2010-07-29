@@ -31,7 +31,6 @@ adds a ChannelListener to an channel. The ChannelLister interface have the follo
 
 by returning null in this methods you can block the action e.g. for password protected channel. simply return null if the Message.getMemberlId()(SessionID) is not premitted to join. 
  
-
-
-
+==More Functions==
+You found all functions and a detail overview in the javadoc.
 
