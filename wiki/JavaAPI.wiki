@@ -1,35 +1,57 @@
+#labels q
 = The Java API =
 Backyard provides a simple Java API.
-All functions available in the Backyard class.
+
+==Backyard==
 
 
-== Important functions ==
+
+||{{{public void startAsync();}}}||
+||Stops the incomming HTTP-Request||
+
+
+||{{{public void stopAsync();}}}||
+||Returns the HTTP-Response||
+
+
+||{{{public static void autoDetectServer(Servlet)}}}||
+||Detects the running server. If you whant to use server detection this should be the first call on backyard, e.g in the init() method||
+
+
+
 
 ===Channels===
-{{Channel Backyard.getMetaChannel()}}
-Returns the Meta channel, which every member of the applications listen to.
 
-{{{Channel Backyard.addChannel(String)}}}
-Adds an channel
-
-{{{void removeChannel(String)}}}
-removes a channel.
-
-{{{Backyard.listentoChannel(String, Member)}}}
-adds an Member to an channel.
-The Member object will identify by the Member id which is by default the session id.
+||{{{puclic static Channel getMetaChannel()}}}||
+||Returns the Meta channel, which every member of the applications listen to.||
 
 
 
-===ChannelListener===
+||{{{puclic static Channel  addChannel(String)}}}||
+||Adds an channel||
 
-{{{Backyard.addChannelListener(String, ChannelListener)}}}
 
-adds a ChannelListener to an channel. The ChannelLister interface have the following methods:
+||{{{public static void removeChannel(String)}}}||
+||removes a channel.||
 
-{{{ Member newMember(Member member); }}} and {{{public String newMessage(String message);}}}
+||{{{Backyard.listentoChannel(String, Member)}}}||
+||adds a Member to an channel. The member object will identify by the member id, which is by default the session id.||
 
-by returning null in this methods you can block the action e.g. for password protected channel. simply return null if the Message.getMemberlId()(SessionID) is not premitted to join. 
+
+
+
+||{{{Backyard.addChannelListener(String, ChannelListener)}}}||
+||adds a ChannelListener to an channel. The ChannelLister interface have the following methods:||
+
+
+
+==ChannelListener==
+||{{{ Member newMember(Member member); }}}||
+||will invoked when a member joins a channel to block the member return null e.g. for password protected channels. simply return null if the Message.getMemberlId()(SessionID) is not premitted to join.|| 
+
+||{{{Message newMessage(Message message);}}}||
+||will invoked befor a message will send over the channel. To block the message, return  null.||
+
  
-==More functions==
+==Additional informations==
 You found all functions and a detail overview in the javadoc.
