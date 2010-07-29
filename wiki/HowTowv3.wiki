@@ -1,8 +1,7 @@
-#How to use Bacakyard
 
-= How to with the jQuery plugin =
+= How to use Backyard =
 
-== How to for Tomcat ==
+
 
 === Server config ===
 
