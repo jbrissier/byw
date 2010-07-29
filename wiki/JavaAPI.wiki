@@ -1,0 +1,37 @@
+= The Java API =
+Backyard provides a simple Java API.
+All functions available in the Backyard class.
+
+
+== Important functions ==
+
+===Channels===
+{{Channel Backyard.getMetaChannel()}}
+Returns the Meta channel, which every member of the applications listen to.
+
+{{{Channel Backyard.addChannel(String)}}}
+Adds an channel
+
+{{{void removeChannel(String)}}}
+removes a channel.
+
+{{{Backyard.listentoChannel(String, Member)}}}
+adds an Member to an channel.
+The Member object will identify by the Member id which is by default the session id.
+
+
+
+===ChannelListener===
+
+{{{Backyard.addChannelListener(String, ChannelListener)}}}
+
+adds a ChannelListener to an channel. The ChannelLister interface have the following methods:
+
+{{{ Member newMember(Member member); }}} and {{{public String newMessage(String message);}}}
+
+by returning null in this methods you can block the action e.g. for password protected channel. simply return null if the Message.getMemberlId()(SessionID) is not premitted to join. 
+ 
+
+
+
+
