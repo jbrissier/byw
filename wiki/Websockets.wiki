@@ -22,7 +22,7 @@ Next step define the socket servlet in your web.xml
 === Define the url to your socket===
 In the jquery plugin you have to define the url to your socket. Socket urls starts with the prefix "ws://" instead of "http://" e.g "ws://${server}/$(webapp)/socket".
 
-To define the socket url there is an option "socket_url" availabel in the plugin 
+To define the socket url there is an option "socket_url" available in the plugin 
 
 {{{
 jQuery.backyard({
