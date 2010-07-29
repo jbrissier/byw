@@ -1,7 +1,7 @@
 #How to enable Websocket Support
 
 = Introduction =
-Look at the backyard.xml. There is an entry (Websocketsupport)  for each Server, to see if your server supports websockets.
+Look at the backyard.xml. There is an entry (Websocketsupport)  for each server, to see if your server supports websockets.
 
 ===Define the socket in the web.xml ===
 Next step define the socket servlet in your web.xml
@@ -38,4 +38,3 @@ socket_url:"ws://${server}/$(webapp)/socket"
 
 ==Thats it==
 The plugin checks the browser websocket support an connect to the socket, othwise the plugin use the comet strategie. You can also have a Browser A(Firefox 3.6) and a Browser B (Apple Safarie). The Browser B commuincates via Sockets and Browser A communicates via comet in the same application. 
-
