@@ -37,4 +37,4 @@ socket_url:"ws://${server}/$(webapp)/socket"
 
 
 ==Thats it==
-The plugin checks the browser websocket support an connect to the socket, othwise the plugin use the comet strategie. You can also have a Browser A(Firefox 3.6) and a Browser B (Apple Safarie). The Browser B commuincates via Sockets and Browser A communicates via comet in the same application. 
+The plugin checks the browser websocket support an connect to the socket, othwise the plugin use the comet strategie. You can also have a Browser A(Firefox 3.6) and a Browser B (Apple Safarie) in the same application. The Browser B commuincates via Sockets and Browser A communicates via comet in the same application. 
