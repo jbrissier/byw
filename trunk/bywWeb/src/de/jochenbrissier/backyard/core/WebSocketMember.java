@@ -104,7 +104,7 @@ public class WebSocketMember implements Member {
 	@Override
 	public boolean equals(Object obj) {
 
-		if (obj instanceof WebSocketMember) {
+		if (obj instanceof Member) {
 
 			Member m = (Member) obj;
 
