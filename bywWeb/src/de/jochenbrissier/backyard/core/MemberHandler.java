@@ -1,5 +1,6 @@
 package de.jochenbrissier.backyard.core;
 
+import java.util.ArrayList;
 import java.util.LinkedList;
 
 import org.apache.commons.logging.Log;
@@ -18,12 +19,8 @@ import com.google.inject.Singleton;
 @Singleton
 public class MemberHandler {
 
-	//TODO: THREAD SAVE IMPROVEMENTS!!!
-	
-	
-	
-	
-	
+	// TODO: THREAD SAVE IMPROVEMENTS!!!
+
 	Log log = LogFactory.getLog(MemberHandler.class);
 
 	LinkedList<Member> member = new LinkedList<Member>();
@@ -45,6 +42,7 @@ public class MemberHandler {
 					return m;
 			}
 			log.debug("new member");
+
 			Member mem = in.getInstance(Member.class);
 			mem.setMemberId(sessionId);
 			member.add(mem);
@@ -53,29 +51,54 @@ public class MemberHandler {
 		}
 
 	}
-/**
- * removes a member from the handler
- * @param sessionId
- */
+
+	/**
+	 * removes a member from the handler
+	 * 
+	 * @param sessionId
+	 */
 	public void removeMember(String sessionId) {
-		//member to remove
-		Member rm = null;
+		// member to remove
+		ArrayList<Member> rm = new ArrayList<Member>();
 
 		synchronized (member) {
 
 			for (Member m : member) {
-				//if member found session id equals id
+				// if member found session id equals id
 				if (m.getMemberlId().equals(sessionId))
-					rm = m;
+					rm.add(m);
 
 			}
 
 		}
 
-		//remove member
+		// remove member
 		synchronized (member) {
-			if (rm != null)
-				member.remove(rm);
+
+			for (Member m : rm) {
+				if (rm != null)
+					member.remove(rm);
+			}
+		}
+
+	}
+
+	public void addMember(Member mem) {
+		synchronized (member) {
+			member.add(mem);
+		}
+	}
+
+	public void replaceMember(Member mem) {
+
+		synchronized (member) {
+			for (int i = 0; i < member.size(); i++) {
+				if (member.get(i).equals(mem)) {
+					member.set(i, mem);
+				}
+
+			}
+
 		}
 
 	}
