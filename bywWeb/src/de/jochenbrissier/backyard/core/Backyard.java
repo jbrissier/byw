@@ -97,6 +97,13 @@ public class Backyard {
 		// get the member from the member handler.
 		this.member = memberhandler.getMember(req.getSession().getId());
 
+		
+		//if member exist in meta channel replace member form channel handler (IMPROVE)
+
+		
+		
+		
+		
 		// listen to meta channel
 		listenToChannel(0);
 
@@ -268,7 +275,7 @@ public class Backyard {
 
 	public static Channel getMetaChannel() {
 
-		return channelhandler.getChannel(0);
+		return channelhandler.getChannel("meta");
 
 	}
 
@@ -565,20 +572,44 @@ public class Backyard {
 		// get session id
 		String id = req.getSession().getId();
 
-		Member member = memberhandler.getMember(id);
 		
-		// if member is already websocketmember
-		if (member instanceof WebSocketMember) {
+		
+		
+		
+		
+		
+		Member member = null;
+//		
+		member = memberhandler.getMember(id);
+		
+		if(member instanceof WebSocketMember)
 			return member;
-		}
-		// else converte member to webm.
-		else {
+		
+		
+		//create a new member
+		member = new WebSocketMember(Backyard.getSocket());
+		member.setMemberId(id);
+		
+		
+		memberhandler.replaceMember(member);
+		
+		
+		
+//		// set id
+//		member.setMemberId(id);
+//
+//		//add member to meta
+//		Channel meta = channelhandler.getChannel("meta");
+//		meta.removeMember(member);
+//		meta.addMember(member);
 
-			// create a new one
-			member = new WebSocketMember(Backyard.getSocket());
-			
-		}
-		getMetaChannel().addMember(member);
+		
+		
+		
+		
+		
+		
+		
 		return member;
 	}
 
