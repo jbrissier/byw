@@ -94,7 +94,7 @@ public class ChannelImpl implements Channel {
 		if (isMember(member)) {
 
 			log.debug("is already member");
-			return;
+			removeMember(member);
 		}
 
 		// cannel listener
@@ -139,19 +139,23 @@ public class ChannelImpl implements Channel {
 	}
 
 	public void removeMember(Member member) {
+	
+		ArrayList<Member> rm = new ArrayList<Member>();
+		
 		synchronized (members) {
 
 			for (Member m : members) {
 				if (m.equals(member)) {
 
-					synchronized (members) {
-
-						members.remove(m);
-					}
+					rm.add(m);
 
 				}
 			}
 
+		}
+		
+		synchronized (members) {
+			members.removeAll(rm);
 		}
 
 	}
