@@ -74,8 +74,8 @@ public class MemberImpl implements Member {
 
 	@Override
 	public boolean equals(Object obj) {
-		if (obj instanceof MemberImpl) {
-			MemberImpl aMember = (MemberImpl) obj;
+		if (obj instanceof Member) {
+			Member aMember = (Member) obj;
 
 			return aMember.getMemberlId().equals(this.id);
 		}
