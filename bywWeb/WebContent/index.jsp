@@ -16,9 +16,9 @@
 
 
 jQuery(document).ready(function(){
-jQuery.backyard({url:'ccomet'});
+jQuery.backyard({url:'ccomet',failover:false});
 
-jQuery.backyard.listen('meta',function(mes){
+jQuery.backyard.listen('fu',function(mes){
 
 jQuery('#messages').append(mes+"<br/>");
 	
@@ -27,7 +27,7 @@ jQuery('#messages').append(mes+"<br/>");
 
 jQuery('#btn').click(function(){
 
-jQuery.backyard.publish('meta',jQuery('#mes').val());
+jQuery.backyard.publish('fu',jQuery('#mes').val());
 
 	
 });

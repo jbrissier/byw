@@ -1,6 +1,7 @@
 package de.jochenbrissier.backyard.util.xml;
 
 import java.io.File;
+import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -20,13 +21,13 @@ public class XMLParser {
 	 * Parser for the backyard.xml file
 	 * @param path
 	 */
-	public XMLParser(String path) {
+	public XMLParser(InputStream io) {
 		try {
 			builder = factory.newDocumentBuilder();
-			document = builder.parse(new File(path));
+			document = builder.parse(io);
 
 		} catch (Exception e) {
-			// TODO: handle exception
+			e.printStackTrace();
 		}
 
 	}

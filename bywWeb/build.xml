@@ -52,6 +52,7 @@
 			<fileset dir="src">
 				<include name="*.xml" />
 				<include name="*.properties" />
+				<exclude name="de.jochenbrissier.backyard/**/test/*"/>
 			</fileset>
 		</copy>
 

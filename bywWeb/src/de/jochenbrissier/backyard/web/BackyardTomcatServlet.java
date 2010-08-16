@@ -54,6 +54,7 @@ public class BackyardTomcatServlet extends HttpServlet implements
 			final HttpServletResponse res) throws ServletException, IOException {
 
 		if (ServerDedec.isServer(ServerDedec.TOMCAT6, this)) {
+			log.warn("TOMCAT6 invoked service method... config your server.xml and change adapter");
 			//super.service(req, res);
 			return;
 		
@@ -114,9 +115,6 @@ public class BackyardTomcatServlet extends HttpServlet implements
 
 	public void event(CometEvent ev) throws IOException, ServletException {
 
-		
-		
-		
 		log.debug("enter service backyard servlet");
 
 		log.debug("enter BackyardServlet");
