@@ -1,0 +1,99 @@
+<?xml version="1.0" encoding="ISO-8859-1"?>
+<project name="bywWeb" basedir="." default="deploy">
+
+
+	<property name="base.dir" value="." />
+	<property name="lib.dir" value=" ${base.dir}/WebContent/lib" />
+	<property name="jetty.home" value="/Library/jetty7" />
+	<property name="webapp.folder" value="${jetty.home}/webapps" />
+	<property name="project.name" value="bywWeb" />
+	<property name="tomcat.libs" value="/Library/tomcat/lib" />
+	<property name="glassfish.libs" value="/Library/GlassFish/glassfish/modules/" />
+	<property name="jetty.libs" value="/Library/jetty7/lib" />
+
+
+	<path id="compile.classpath">
+
+		<fileset dir="WebContent/WEB-INF/lib">
+			<include name="*.jar" />
+		</fileset>
+
+
+		<fileset dir="${glassfish.libs}">
+			<include name="*.jar" />
+
+		</fileset>
+
+
+		<fileset dir="${tomcat.libs}">
+			<include name="*.jar" />
+
+		</fileset>
+
+
+		<fileset dir="${jetty.libs}">
+			<include name="*.jar" />
+
+		</fileset>
+
+	</path>
+
+
+	<target name="init">
+
+		<mkdir dir="build/classes" />
+		<mkdir dir="dist" />
+
+	</target>
+
+	<target name="compile" description="Compiles the Task">
+
+		<copy todir="build/classes">
+			<fileset dir="src">
+				<include name="*.xml" />
+				<include name="*.properties" />
+				<exclude name="de.jochenbrissier.backyard/**/test/*"/>
+			</fileset>
+		</copy>
+
+
+
+		<javac destdir="build/classes" debug="true" srcdir="src">
+			<classpath refid="compile.classpath">
+			</classpath>
+
+		</javac>
+
+	</target>
+
+	<target name="war" description="Build" depends="init,compile">
+		<war destfile="dist/${project.name}.war" webxml="WebContent/WEB-INF/web.xml">
+			<fileset dir="WebContent">
+			</fileset>
+			<lib dir="WebContent/WEB-INF/lib" />
+			<classes dir="build/classes" />
+		</war>
+
+	</target>
+
+	<target name="deploy" depends="clean,war">
+
+		<copy todir="${webapp.folder}">
+			<fileset dir="dist">
+				<include name="*.war" />
+			</fileset>
+
+		</copy>
+
+
+	</target>
+
+
+	<target name="clean">
+		<delete dir="dist" />
+		<delete dir="build" />
+	</target>
+
+
+
+</project>
