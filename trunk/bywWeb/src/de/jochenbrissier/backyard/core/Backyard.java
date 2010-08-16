@@ -1,6 +1,7 @@
 package de.jochenbrissier.backyard.core;
 
 import java.util.ArrayList;
+import java.util.List;
 
 import javax.servlet.Servlet;
 import javax.servlet.http.HttpServlet;
@@ -16,6 +17,7 @@ import com.google.inject.Injector;
 
 import de.jochenbrissier.backyard.module.BackyardModule;
 import de.jochenbrissier.backyard.module.WebsocketEvent;
+import de.jochenbrissier.backyard.util.MemberChannelUtil;
 import de.jochenbrissier.backyard.util.ServerDedec;
 import de.jochenbrissier.backyard.util.ServerNotSupportedException;
 
@@ -70,7 +72,7 @@ public class Backyard {
 
 		this.resp = resp;
 		this.req = req;
-
+		
 		if (!alternativ_impl)
 			in = Guice.createInjector(new BackyardModule());
 
@@ -97,13 +99,9 @@ public class Backyard {
 		// get the member from the member handler.
 		this.member = memberhandler.getMember(req.getSession().getId());
 
-		
-		//if member exist in meta channel replace member form channel handler (IMPROVE)
+		// if member exist in meta channel replace member form channel handler
+		// (IMPROVE)
 
-		
-		
-		
-		
 		// listen to meta channel
 		listenToChannel(0);
 
@@ -572,45 +570,29 @@ public class Backyard {
 		// get session id
 		String id = req.getSession().getId();
 
-		
-		
-		
-		
-		
-		
 		Member member = null;
-//		
 		member = memberhandler.getMember(id);
-		
-		if(member instanceof WebSocketMember)
-			return member;
-		
-		
-		//create a new member
-		member = new WebSocketMember(Backyard.getSocket());
-		member.setMemberId(id);
-		
-		
-		memberhandler.replaceMember(member);
-		
-		
-		
-//		// set id
-//		member.setMemberId(id);
-//
-//		//add member to meta
-//		Channel meta = channelhandler.getChannel("meta");
-//		meta.removeMember(member);
-//		meta.addMember(member);
 
+		if (member instanceof WebSocketMember)
+			return member;
+
+		// create a new member
+		Member wsmember = new WebSocketMember(Backyard.getSocket());
+		wsmember.setMemberId(id);
+
+		MemberChannelUtil mcu = new MemberChannelUtil(channelhandler,
+				memberhandler);
+
+		List<Channel> ch = mcu.getMemberChannels(member);
+
+		mcu.addMemberToChannels(ch, wsmember);
 		
 		
-		
-		
-		
-		
-		
-		return member;
+		memberhandler.replaceMember(wsmember);
+
+		// tranclate the channels from old to new member obj
+
+		return wsmember;
 	}
 
 }

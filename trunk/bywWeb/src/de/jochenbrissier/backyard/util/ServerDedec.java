@@ -2,6 +2,8 @@ package de.jochenbrissier.backyard.util;
 
 import java.io.File;
 import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
+import java.io.IOException;
 import java.net.URL;
 import java.util.List;
 
@@ -12,7 +14,9 @@ import javax.xml.parsers.DocumentBuilderFactory;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
+import org.glassfish.admin.amx.util.FileOutput;
 import org.glassfish.internal.api.ServerContext;
+import java.io.InputStream;
 import org.w3c.dom.Document;
 import org.w3c.dom.Node;
 
@@ -60,14 +64,18 @@ public class ServerDedec {
 	// object that represents a xml note
 	XmlServerNode server;
 
-	
-	
-	
-	
 	public ServerDedec(Servlet serv) {
 		URL url = getClass().getClassLoader().getResource(XML_FILE);
-		log.debug("read xml: " + url.getPath());
-		xmlParser = new XMLParser(url.getPath());
+		// write the xml to src
+
+		
+		log.debug("read xml: " + url.getProtocol() + ":" + url.getPath());
+		try {
+			xmlParser = new XMLParser(url.openStream());
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 		log.debug("try to get servername from servlet context");
 		String serverStr = getServer(serv);
 		log.debug("Server: " + serverStr);
@@ -78,6 +86,29 @@ public class ServerDedec {
 	public boolean getWebSocketSupport() {
 
 		return server.isWebsocketSupport();
+
+	}
+
+	public void writeXMLtoTemp(InputStream io) {
+
+		try {
+
+			byte[] buffy = new byte[1024];
+
+			File by = new File(System.getProperty("java.io.tmpdir") + XML_FILE);
+			FileOutputStream fos = new FileOutputStream(by);
+			log.debug("write file to:" + by.getAbsolutePath());
+			while ((io.read(buffy)) != -1) {
+				fos.write(buffy);
+			}
+			fos.close();
+			
+			by.deleteOnExit();
+
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 
 	}
 
@@ -209,11 +240,12 @@ public class ServerDedec {
 					.newInstance();
 			DocumentBuilder builder = factory.newDocumentBuilder();
 
-			URL url = getClass().getClassLoader().getResource(XML_FILE);
+			InputStream s = getClass().getClassLoader().getResourceAsStream(
+					XML_FILE);
 
 			// URL url = ClassLoader.getSystemResource("Backyard.xml");
 			// System.out.println(url.getPath());
-			Document doc = builder.parse(new File(url.getPath()));
+			Document doc = builder.parse(new File(XML_FILE).getAbsoluteFile());
 
 			Node el = doc.getElementsByTagName(server).item(0);
 			return el.getTextContent();
