@@ -2,6 +2,12 @@ package de.jochenbrissier.backyard.core;
 
 import java.util.UUID;
 
+import javax.xml.bind.annotation.XmlAccessType;
+import javax.xml.bind.annotation.XmlAccessorType;
+import javax.xml.bind.annotation.XmlElement;
+import javax.xml.bind.annotation.XmlRootElement;
+import javax.xml.bind.annotation.XmlTransient;
+
 /**
  * an memessage obj. not final
  * 
@@ -10,10 +16,12 @@ import java.util.UUID;
  * @author jochen
  * 
  */
+@XmlRootElement
 public class Message {
 
 	private long channelid;
 	private String memberid;
+	
 	private String data;
 	private String channelName;
 	private String memberNane;
@@ -23,7 +31,7 @@ public class Message {
 
 	public Message(String data) {
 		this.data = data;
-		id=uID.toString();
+		id = uID.toString();
 	}
 
 	public Message() {
@@ -55,7 +63,7 @@ public class Message {
 	public void setMemberid(String memberid) {
 		this.memberid = memberid;
 	}
-
+	@XmlElement
 	public String getData() {
 		return data;
 	}
@@ -87,7 +95,7 @@ public class Message {
 	public void setuID(UUID uID) {
 		this.uID = uID;
 	}
-
+	@XmlElement
 	public String getId() {
 		return id;
 	}

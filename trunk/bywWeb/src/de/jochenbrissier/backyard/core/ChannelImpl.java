@@ -4,6 +4,8 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
 
+import javax.xml.bind.annotation.XmlRootElement;
+
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 
@@ -15,6 +17,8 @@ import org.apache.commons.logging.LogFactory;
  * @author jochen
  * 
  */
+
+@XmlRootElement
 public class ChannelImpl implements Channel {
 
 	private Log log = LogFactory.getLog(ChannelImpl.class);
@@ -24,6 +28,10 @@ public class ChannelImpl implements Channel {
 
 	private String name;
 	private long id;
+
+	public ChannelImpl() {
+		// TODO Auto-generated constructor stub
+	}
 
 	/**
 	 * Is member in the channel
@@ -139,9 +147,9 @@ public class ChannelImpl implements Channel {
 	}
 
 	public void removeMember(Member member) {
-	
+
 		ArrayList<Member> rm = new ArrayList<Member>();
-		
+
 		synchronized (members) {
 
 			for (Member m : members) {
@@ -153,7 +161,7 @@ public class ChannelImpl implements Channel {
 			}
 
 		}
-		
+
 		synchronized (members) {
 			members.removeAll(rm);
 		}
@@ -219,6 +227,18 @@ public class ChannelImpl implements Channel {
 
 		chlist.remove(cL);
 
+	}
+
+	public String getName() {
+		return name;
+	}
+
+	public void setName(String name) {
+		this.name = name;
+	}
+
+	public void setMembers(ArrayList<Member> members) {
+		this.members = members;
 	}
 
 }

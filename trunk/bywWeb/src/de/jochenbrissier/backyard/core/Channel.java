@@ -1,13 +1,19 @@
 package de.jochenbrissier.backyard.core;
 
 import java.util.Collection;
+
+import javax.xml.bind.annotation.XmlRootElement;
 /**
  * Interface which represents a channel
  * @author jochen
  *
  */
+@XmlRootElement
+
 public interface Channel {
 
+	
+	
 	/**
 	 *Add member to channel
 	 * 

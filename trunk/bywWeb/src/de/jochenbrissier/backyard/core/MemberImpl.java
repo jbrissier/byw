@@ -5,10 +5,14 @@ package de.jochenbrissier.backyard.core;
  */
 
 import java.util.Iterator;
-
 import java.util.LinkedList;
 import java.util.Queue;
 import java.util.concurrent.ConcurrentLinkedQueue;
+
+import javax.xml.bind.annotation.XmlAccessType;
+import javax.xml.bind.annotation.XmlAccessorType;
+import javax.xml.bind.annotation.XmlElement;
+import javax.xml.bind.annotation.XmlRootElement;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
@@ -16,18 +20,27 @@ import org.apache.commons.logging.LogFactory;
 import com.google.inject.Inject;
 
 import de.jochenbrissier.backyard.util.SendFailException;
-
+@XmlAccessorType( XmlAccessType.NONE )
+@XmlRootElement
 public class MemberImpl implements Member {
 
 	private Log log = LogFactory.getLog(MemberImpl.class);
-
+	@XmlElement
 	private String name;
+	@XmlElement
 	private String id;
 	private Event actualEvent;
-	private long timestamp;
+	@XmlElement
+	private long timestamp; 
+	
+	@XmlElement
 	private Message lastMessage;
 
 	private Queue<Message> messages = new ConcurrentLinkedQueue<Message>();
+
+	public MemberImpl() {
+		// TODO Auto-generated constructor stub
+	}
 
 	@Inject
 	public MemberImpl(Event ev) {
