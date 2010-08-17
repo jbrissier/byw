@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import javax.servlet.Servlet;
+import javax.servlet.ServletContext;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -51,7 +52,7 @@ public class Backyard {
 
 	private static MemberHandler memberhandler;
 
-	// members
+	// member variables
 	private Member member;
 	private HttpServlet servlet;
 	private HttpServletRequest req;
@@ -69,19 +70,21 @@ public class Backyard {
 	 */
 
 	public Backyard(HttpServletRequest req, HttpServletResponse resp) {
-
+		// get response and request
 		this.resp = resp;
 		this.req = req;
-		
+
+		// check if alternative implemetation was invoked
 		if (!alternativ_impl)
 			in = Guice.createInjector(new BackyardModule());
 
+		// get channelHandler
 		channelhandler = in.getInstance(ChannelHandler.class);
 
+		// get memberHandler
 		memberhandler = in.getInstance(MemberHandler.class);
 
 		// load channelhandler from the buffer
-
 		for (ChannelListenerBuffer key : channelListenerBuffer) {
 
 			if (key.getChannel().matches(".*_nb")) {
@@ -93,15 +96,12 @@ public class Backyard {
 
 		}
 		// clear the buffer;
-
 		channelListenerBuffer.clear();
 
 		// get the member from the member handler.
 		this.member = memberhandler.getMember(req.getSession().getId());
 
 		// if member exist in meta channel replace member form channel handler
-		// (IMPROVE)
-
 		// listen to meta channel
 		listenToChannel(0);
 
@@ -356,6 +356,19 @@ public class Backyard {
 		channelhandler.getChannel(id).addListener(cl);
 	}
 
+	
+	
+	/**
+	 * publish data over a channel
+	 * @param channel
+	 * @param data
+	 */
+	public static void publish(String channel, String data) {
+
+		channelhandler.getChannel(channel).sendMessage(data);
+
+	}
+
 	/**
 	 * removes a channellistener from a channel
 	 * 
@@ -564,6 +577,14 @@ public class Backyard {
 		return null;
 	}
 
+	/**
+	 * Function returns a special member for jetty websocket support lock at
+	 * BackyardSocket.java to see how it works
+	 * 
+	 * @param req
+	 * @return
+	 */
+
 	public static Member getSocketMember(HttpServletRequest req) {
 
 		// try to find a existing user
@@ -586,13 +607,23 @@ public class Backyard {
 		List<Channel> ch = mcu.getMemberChannels(member);
 
 		mcu.addMemberToChannels(ch, wsmember);
-		
-		
+
 		memberhandler.replaceMember(wsmember);
 
 		// tranclate the channels from old to new member obj
 
 		return wsmember;
+	}
+
+	/**
+	 * function register the channel handler in the servercontext
+	 */
+	public static void registCannelHandler(Servlet servlet) {
+
+		ServletContext context = servlet.getServletConfig().getServletContext();
+
+		context.setAttribute("byw_channelhandler", channelhandler);
+
 	}
 
 }
