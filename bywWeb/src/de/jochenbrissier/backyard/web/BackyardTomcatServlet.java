@@ -36,9 +36,11 @@ public class BackyardTomcatServlet extends HttpServlet implements
 
 	@Override
 	public void init() throws ServletException {
-
+		// Auto detect the server
 		Backyard.autoDedectImpl(this);
 
+		// register the channelhandler
+		Backyard.registCannelHandler(this);
 	}
 
 	private void send(HttpServletRequest req, HttpServletResponse resp,
@@ -54,10 +56,11 @@ public class BackyardTomcatServlet extends HttpServlet implements
 			final HttpServletResponse res) throws ServletException, IOException {
 
 		if (ServerDedec.isServer(ServerDedec.TOMCAT6, this)) {
-			log.warn("TOMCAT6 invoked service method... config your server.xml and change adapter");
-			//super.service(req, res);
+			log
+					.warn("TOMCAT6 invoked service method... config your server.xml and change adapter");
+			// super.service(req, res);
 			return;
-		
+
 		}
 
 		req.setAttribute("de.jochenbrissier.byw.comet", "noneTomcat");
@@ -122,8 +125,11 @@ public class BackyardTomcatServlet extends HttpServlet implements
 		HttpServletRequest req = ev.getHttpServletRequest();
 		HttpServletResponse resp = ev.getHttpServletResponse();
 
+		//tomcat character encoding fix ... 
+		resp.setCharacterEncoding(req.getCharacterEncoding());
+		
+		
 		// Backyard API
-
 		Backyard backyard = new Backyard(req, resp);
 
 		backyard.setServlet(this);
@@ -147,7 +153,10 @@ public class BackyardTomcatServlet extends HttpServlet implements
 
 				resp.getWriter().print(
 						"{\"status\":\"OK\",\"id\":\""
-								+ req.getSession().getId() + "\",\"websocket\":\""+Backyard.isWebsocketSupport()+"\"}");				pw.flush();
+								+ req.getSession().getId()
+								+ "\",\"websocket\":\""
+								+ Backyard.isWebsocketSupport() + "\"}");
+				pw.flush();
 				pw.close();
 
 				return;

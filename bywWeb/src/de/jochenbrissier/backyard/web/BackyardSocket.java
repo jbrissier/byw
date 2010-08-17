@@ -17,12 +17,8 @@ public class BackyardSocket extends WebSocketServlet {
 	@Override
 	protected WebSocket doWebSocketConnect(HttpServletRequest req, String arg1) {
 	
-		System.out.println("Websocket--------------------<<<--@");
-		
 		//get socket event 
-
 		WebsocketEvent ev= (WebsocketEvent) Backyard.getSocketMember(req).getEvent();
-		
 		return ev;
 	}
 
