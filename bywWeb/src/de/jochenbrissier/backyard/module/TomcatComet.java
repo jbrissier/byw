@@ -58,8 +58,10 @@ public class TomcatComet implements Event {
 	public void close() throws SendFailException {
 
 		try {
-			
 			PrintWriter wr = res.getWriter();
+			
+			
+			
 			wr.write(mp.getMessages(list));
 			wr.close();
 			wr.flush();
@@ -67,7 +69,7 @@ public class TomcatComet implements Event {
 			this.ev.close();
 			
 			
-			
+
 		} catch (Exception e) {
 			this.ready = false;
 			this.error = true;
